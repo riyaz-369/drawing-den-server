@@ -22,8 +22,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // await client.connect();
+    const usersCollections = client.db("usersDB").collection("users");
 
-    // apis here
+    app.post("/users", async (req, res) => {
+      const users = req.body;
+      const result = await usersCollections.insertOne(users);
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
