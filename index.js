@@ -23,6 +23,9 @@ async function run() {
   try {
     // await client.connect();
     const usersCollections = client.db("usersDB").collection("users");
+    const artAndCraftCollection = client
+      .db("artAndCraftDB")
+      .collection("art and crafts");
 
     app.get("/users", async (req, res) => {
       const cursor = usersCollections.find();
@@ -33,6 +36,20 @@ async function run() {
     app.post("/users", async (req, res) => {
       const users = req.body;
       const result = await usersCollections.insertOne(users);
+      res.send(result);
+    });
+
+    // art and craft related APIs
+
+    app.get("/crafts", async (req, res) => {
+      const cursor = artAndCraftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post("/crafts", async (req, res) => {
+      const crafts = req.body;
+      const result = await artAndCraftCollection.insertOne(crafts);
       res.send(result);
     });
 
